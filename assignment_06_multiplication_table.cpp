@@ -50,10 +50,67 @@
 //
 
 //
-// =============================================================================
-// YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
-// =============================================================================
 
 #include <iostream>
 using namespace std;
+
+// Function for Part A
+void singleTable(int number)
+{
+    cout << "\nMultiplication Table for " << number << ":\n";
+
+    for (int i = 1; i <= 12; i++)
+    {
+        cout << number << " x " << i << " = " << number * i << endl;
+    }
+}
+
+// Function for Part B
+void tablesFromOneToN(int N)
+{
+    for (int num = 1; num <= N; num++)
+    {
+        cout << "\nMultiplication Table for " << num << ":\n";
+
+        for (int i = 1; i <= 12; i++)
+        {
+            cout << num << " x " << i << " = " << num * i << endl;
+        }
+
+        cout << "---------------------------" << endl;
+    }
+}
+
+int main()
+{
+    int number, N;
+
+    // ---------------- Part A ----------------
+    cout << "PART A - Single Multiplication Table" << endl;
+    cout << "Enter a number: ";
+    cin >> number;
+
+    if (number <= 0)
+    {
+        cout << "Error: Please enter a positive integer." << endl;
+        return 0;
+    }
+
+    singleTable(number);
+
+    // ---------------- Part B ----------------
+    cout << "\nPART B - Tables from 1 to N" << endl;
+    cout << "Enter a number (N): ";
+    cin >> N;
+
+    if (N <= 0)
+    {
+        cout << "Error: Please enter a positive integer." << endl;
+        return 0;
+    }
+
+    tablesFromOneToN(N);
+
+    return 0;
+}
 
