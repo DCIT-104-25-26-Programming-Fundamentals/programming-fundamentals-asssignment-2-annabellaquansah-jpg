@@ -72,11 +72,123 @@
 
 //
 // =============================================================================
-// YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
-// =============================================================================
 
 #include <iostream>
 #include <vector>
 #include <string>
+#include <limits>
+
 using namespace std;
 
+void showMenu();
+void addTask(vector<string>& tasks);
+void viewTasks(const vector<string>& tasks);
+void deleteTask(vector<string>& tasks);
+int getMenuChoice();
+
+int main() {
+    vector<string> tasks;
+    bool running = true;
+
+    while (running) {
+        showMenu();
+        int choice = getMenuChoice();
+
+        switch (choice) {
+            case 1:
+                addTask(tasks);
+                break;
+            case 2:
+                viewTasks(tasks);
+                break;
+            case 3:
+                deleteTask(tasks);
+                break;
+            case 4:
+                cout << "Goodbye!\n";
+                running = false;
+                break;
+            default:
+                cout << "Invalid choice. Please enter a number between 1 and 4.\n";
+                break;
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+
+void showMenu() {
+    cout << "============================\n";
+    cout << "     TO-DO LIST MENU\n";
+    cout << "============================\n";
+    cout << "1. Add task\n";
+    cout << "2. View tasks\n";
+    cout << "3. Delete task\n";
+    cout << "4. Quit\n";
+    cout << "Enter your choice (1-4): ";
+}
+
+int getMenuChoice() {
+    int choice;
+    while (!(cin >> choice)) {
+        cout << "Invalid input. Please enter a number: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover newline
+    return choice;
+}
+
+void addTask(vector<string>& tasks) {
+    string task;
+    cout << "Enter task: ";
+    getline(cin, task);
+
+    if (task.empty()) {
+        cout << "Task cannot be empty. Nothing was added.\n";
+        return;
+    }
+
+    tasks.push_back(task);
+    cout << "Task added: \"" << task << "\"\n";
+}
+
+void viewTasks(const vector<string>& tasks) {
+    if (tasks.empty()) {
+        cout << "Your list is empty. Add a task to get started!\n";
+        return;
+    }
+
+    cout << "Your Tasks:\n";
+    for (size_t i = 0; i < tasks.size(); i++) {
+        cout << i + 1 << ". " << tasks[i] << "\n";
+    }
+}
+
+void deleteTask(vector<string>& tasks) {
+    if (tasks.empty()) {
+        cout << "There are no tasks to delete.\n";
+        return;
+    }
+
+    viewTasks(tasks);
+    cout << "Enter task number to delete: ";
+
+    int index;
+    while (!(cin >> index)) {
+        cout << "Invalid input. Please enter a number: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if (index < 1 || index > static_cast<int>(tasks.size())) {
+        cout << "Invalid task number. No task was deleted.\n";
+        return;
+    }
+
+    string removed = tasks[index - 1];
+    tasks.erase(tasks.begin() + (index - 1));
+    cout << "Task \"" << removed << "\" has been removed.\n";
+}
