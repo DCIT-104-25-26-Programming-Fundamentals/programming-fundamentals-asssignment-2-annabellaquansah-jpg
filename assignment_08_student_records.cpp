@@ -74,12 +74,159 @@
 
 //
 // =============================================================================
-// YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
-// =============================================================================
-
 #include <iostream>
 #include <vector>
 #include <string>
 #include <iomanip>
+#include <limits>
 using namespace std;
+
+// Struct representing a single student record
+struct Student {
+    string name;
+    int id;
+    vector<double> scores;
+};
+
+// Clears bad input state and discards the rest of the line
+void clearInputBuffer() {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+// Computes the average of a student's scores (0 if no scores)
+double calculateAverage(const Student &s) {
+    if (s.scores.empty()) return 0.0;
+    double sum = 0.0;
+    for (double sc : s.scores) sum += sc;
+    return sum / s.scores.size();
+}
+
+// FEATURE 1 — Add a Student
+void addStudent(vector<Student> &students) {
+    Student s;
+
+    cout << "Student name: ";
+    cin.ignore();
+    getline(cin, s.name);
+
+    cout << "Student ID: ";
+    while (!(cin >> s.id)) {
+        cout << "Invalid ID. Please enter a numeric ID: ";
+        clearInputBuffer();
+    }
+
+    int count;
+    cout << "How many scores? ";
+    while (!(cin >> count) || count < 0) {
+        cout << "Invalid number. How many scores? ";
+        clearInputBuffer();
+    }
+
+    for (int i = 1; i <= count; i++) {
+        double score;
+        cout << "Enter score " << i << ": ";
+        while (!(cin >> score)) {
+            cout << "Invalid score. Enter score " << i << ": ";
+            clearInputBuffer();
+        }
+        s.scores.push_back(score);
+    }
+
+    students.push_back(s);
+    cout << "Student \"" << s.name << "\" added successfully.\n";
+}
+
+// FEATURE 2 — Display All Students
+void displayStudents(const vector<Student> &students) {
+    if (students.empty()) {
+        cout << "No students have been added yet.\n";
+        return;
+    }
+
+    cout << left << setw(20) << "Name"
+         << setw(12) << "ID"
+         << setw(30) << "Scores"
+         << "Average\n";
+    cout << string(75, '-') << "\n";
+
+    for (const auto &s : students) {
+        cout << left << setw(20) << s.name
+             << setw(12) << s.id;
+
+        string scoreList;
+        for (size_t i = 0; i < s.scores.size(); i++) {
+            scoreList += to_string(static_cast<int>(s.scores[i]));
+            if (i != s.scores.size() - 1) scoreList += ", ";
+        }
+        cout << setw(30) << scoreList;
+
+        cout << fixed << setprecision(2) << calculateAverage(s) << "\n";
+    }
+}
+
+// FEATURE 3 — Calculate Average Score for a Specific Student
+void calculateAverageForId(const vector<Student> &students) {
+    int id;
+    cout << "Enter student ID: ";
+    while (!(cin >> id)) {
+        cout << "Invalid ID. Enter student ID: ";
+        clearInputBuffer();
+    }
+
+    for (const auto &s : students) {
+        if (s.id == id) {
+            cout << fixed << setprecision(2);
+            cout << s.name << "'s average score: " << calculateAverage(s) << "\n";
+            return;
+        }
+    }
+
+    cout << "Error: no student found with ID " << id << ".\n";
+}
+
+// Displays the main menu
+void printMenu() {
+    cout << "\n================================\n";
+    cout << "   STUDENT RECORD SYSTEM MENU\n";
+    cout << "================================\n";
+    cout << "1. Add student\n";
+    cout << "2. Display all students\n";
+    cout << "3. Calculate average score\n";
+    cout << "4. Quit\n";
+    cout << "Enter your choice (1-4): ";
+}
+
+int main() {
+    vector<Student> students;
+    int choice;
+
+    do {
+        printMenu();
+        if (!(cin >> choice)) {
+            cout << "Invalid input. Please enter a number between 1 and 4.\n";
+            clearInputBuffer();
+            continue;
+        }
+
+        switch (choice) {
+            case 1:
+                addStudent(students);
+                break;
+            case 2:
+                displayStudents(students);
+                break;
+            case 3:
+                calculateAverageForId(students);
+                break;
+            case 4:
+                cout << "Goodbye!\n";
+                break;
+            default:
+                cout << "Invalid choice. Please enter a number between 1 and 4.\n";
+        }
+    } while (choice != 4);
+
+    return 0;
+}
 
