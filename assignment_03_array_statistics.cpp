@@ -36,9 +36,75 @@
 
 //
 // =============================================================================
-// YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
-// =============================================================================
-
 #include <iostream>
 using namespace std;
+
+int computeSum(int arr[], int n) {
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}
+
+// Computes the average of all elements in the array
+double computeAverage(int arr[], int n) {
+    int sum = computeSum(arr, n);
+    return static_cast<double>(sum) / n;
+}
+
+// Finds the maximum value in the array
+int computeMax(int arr[], int n) {
+    int maxVal = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > maxVal) {
+            maxVal = arr[i];
+        }
+    }
+    return maxVal;
+}
+
+// Finds the minimum value in the array
+int computeMin(int arr[], int n) {
+    int minVal = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < minVal) {
+            minVal = arr[i];
+        }
+    }
+    return minVal;
+}
+
+int main() {
+    int n;
+
+    cout << "How many numbers? ";
+    cin >> n;
+
+    if (n <= 0) {
+        cout << "Error: N must be a positive integer." << endl;
+        return 1;
+    }
+
+    int* arr = new int[n];
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter number " << (i + 1) << ": ";
+        cin >> arr[i];
+    }
+
+    int sum = computeSum(arr, n);
+    double average = computeAverage(arr, n);
+    int maximum = computeMax(arr, n);
+    int minimum = computeMin(arr, n);
+
+    cout << "\nResults:" << endl;
+    cout << "Sum:     " << sum << endl;
+    cout << "Average: " << average << endl;
+    cout << "Maximum: " << maximum << endl;
+    cout << "Minimum: " << minimum << endl;
+
+    delete[] arr;
+    return 0;
+}
 
